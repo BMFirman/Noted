@@ -17,6 +17,22 @@ public class Note {
         System.out.println(this.id + " " + this.active + " " + this.date + " " + this.priority + " " + this.textData);
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getActive() {
+        return active;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
     public String getTextData() {
         return textData;
     }
