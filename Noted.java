@@ -13,27 +13,9 @@ public class Noted {
         Scanner mainInput = new Scanner(System.in); 
         ArrayList<Note> data = new ArrayList<Note>();
         data = readDataCSV();
-        mainPrintout();
-
-        while(true) {
-            String selection = mainInput.next();
-            if (selection.substring(0,1).equals("a")) {    
-                System.out.println("adding...");
-            
-            } else if (selection.substring(0,1).equals("d")) {
-                System.out.println("deleting...");
-            
-            } else if (selection.substring(0,1).equals("q")) {
-                System.exit(0);
-            
-            } else if (selection.substring(0,1).equals("returning...")) {
-                System.out.println("returning...");
-            
-            } else {
-                System.out.println("invalid, h:help, q:quit");
-            }
-        }
-
+        clearScreen(); 
+        mainPrintout(data);
+        mainLoop(mainInput);
         /*
         for (Note n : data) {
             System.out.println (n.getTextData());
@@ -54,10 +36,64 @@ public class Noted {
 
     }
 
-    static void mainPrintout() {
+    static void mainPrintout(ArrayList<Note> data) {
         //System.out.println ("Noted");
         System.out.println ("h: help, v: view, a:add, d:delete");
+        for (Note n : data) {
+            System.out.println (n.getTextData());
+        }
+    }
 
+    static void mainLoop(Scanner mainInput) {
+        while(true) {
+            String selection = mainInput.next();
+            if (selection.substring(0,1).equals("a")) {    
+                System.out.println("adding...");
+                addNewNote(mainInput);
+            
+            } else if (selection.substring(0,1).equals("d")) {
+                System.out.println("deleting...");
+            
+            } else if (selection.substring(0,1).equals("q")) {
+                System.exit(0);
+            
+            } else if (selection.substring(0,1).equals("x")) {
+                System.out.println("returning...");
+                clearScreen(); 
+            } else {
+                System.out.println("invalid, h:help, q:quit");
+            }
+        }
+    }
+
+    static void addNewNote(Scanner mainInput) {
+        String textData;
+        
+
+        while(true) {
+            String selection = mainInput.next();
+            if (selection.substring(0,1).equals("a")) {    
+                System.out.println("adding...");
+                addNewNote(mainInput);
+            
+            } else if (selection.substring(0,1).equals("d")) {
+                System.out.println("deleting...");
+            
+            } else if (selection.substring(0,1).equals("q")) {
+                System.exit(0);
+            
+            } else if (selection.substring(0,1).equals("x")) {
+                System.out.println("returning...");
+                clearScreen(); 
+            } else {
+                System.out.println("invalid, h:help, q:quit");
+            }
+        }
+    }
+
+    public static void clearScreen() {  
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
     }
 
     public static ArrayList<Note> readDataCSV() {
