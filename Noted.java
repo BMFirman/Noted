@@ -15,41 +15,25 @@ public class Noted {
         data = readDataCSV();
         clearScreen(); 
         mainPrintout(data);
-        mainLoop(mainInput);
-        /*
-        for (Note n : data) {
-            System.out.println (n.getTextData());
-        }
+        mainLoop(mainInput, data);
 
-        
-        Note newTestNote = new Note("1", "0", "9/2/1998", "0", "More Test Data");
-        data.add(newTestNote);
-
-        writeDataCSV(data);
-
-        data = readDataCSV();
-
-        for (Note n : data) {
-            System.out.println (n.getTextData());
-        }
-        */
 
     }
 
     static void mainPrintout(ArrayList<Note> data) {
         //System.out.println ("Noted");
-        System.out.println ("h: help, v: view, a:add, d:delete");
+        System.out.println ("flags h: help, v: view, a:add, d:delete");
         for (Note n : data) {
             System.out.println (n.getTextData());
         }
     }
 
-    static void mainLoop(Scanner mainInput) {
+    static void mainLoop(Scanner mainInput, ArrayList<Note> data) {
         while(true) {
             String selection = mainInput.next();
             if (selection.substring(0,1).equals("a")) {    
                 System.out.println("adding...");
-                addNewNote(mainInput);
+                data.add(addNewNote(mainInput, data));
             
             } else if (selection.substring(0,1).equals("d")) {
                 System.out.println("deleting...");
@@ -66,30 +50,22 @@ public class Noted {
         }
     }
 
-    static void addNewNote(Scanner mainInput) {
-        String textData;
-        
+    static Note addNewNote(Scanner mainInput, ArrayList<Note> data) {
+        int newIndex = data.size();
+        newIndex++;
 
-        while(true) {
-            String selection = mainInput.next();
-            if (selection.substring(0,1).equals("a")) {    
-                System.out.println("adding...");
-                addNewNote(mainInput);
-            
-            } else if (selection.substring(0,1).equals("d")) {
-                System.out.println("deleting...");
-            
-            } else if (selection.substring(0,1).equals("q")) {
-                System.exit(0);
-            
-            } else if (selection.substring(0,1).equals("x")) {
-                System.out.println("returning...");
-                clearScreen(); 
-            } else {
-                System.out.println("invalid, h:help, q:quit");
-            }
-        }
+
+        System.out.print("Title: ");
+        String textData = mainInput.next();
+        System.out.println();
+        System.out.print("Expiry (DD/MM/YY): ");
+        String date = mainInput.next();
+
+        Note newNote = new Note(String.valueOf(newIndex), "0", date, "0", textData);
+
+        return newNote;
     }
+
 
     public static void clearScreen() {  
         System.out.print("\033[H\033[2J");  
