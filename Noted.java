@@ -6,18 +6,40 @@ import java.lang.SecurityException;
 import java.io.IOException;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
-
+import java.util.Scanner;
 public class Noted {
 
     public static void main(String[] args) {
-        
+        Scanner mainInput = new Scanner(System.in); 
         ArrayList<Note> data = new ArrayList<Note>();
         data = readDataCSV();
+        mainPrintout();
 
+        while(true) {
+            String selection = mainInput.next();
+            if (selection.substring(0,1).equals("a")) {    
+                System.out.println("adding...");
+            
+            } else if (selection.substring(0,1).equals("d")) {
+                System.out.println("deleting...");
+            
+            } else if (selection.substring(0,1).equals("q")) {
+                System.exit(0);
+            
+            } else if (selection.substring(0,1).equals("returning...")) {
+                System.out.println("returning...");
+            
+            } else {
+                System.out.println("invalid, h:help, q:quit");
+            }
+        }
+
+        /*
         for (Note n : data) {
             System.out.println (n.getTextData());
         }
 
+        
         Note newTestNote = new Note("1", "0", "9/2/1998", "0", "More Test Data");
         data.add(newTestNote);
 
@@ -28,6 +50,13 @@ public class Noted {
         for (Note n : data) {
             System.out.println (n.getTextData());
         }
+        */
+
+    }
+
+    static void mainPrintout() {
+        //System.out.println ("Noted");
+        System.out.println ("h: help, v: view, a:add, d:delete");
 
     }
 
@@ -112,7 +141,5 @@ public class Noted {
         }
 
         return output;
-    }
-
-        
+    }        
 }
