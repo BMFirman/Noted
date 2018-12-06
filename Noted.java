@@ -14,38 +14,44 @@ public class Noted {
         Scanner mainInput = new Scanner(System.in); 
         ArrayList<Note> data = new ArrayList<Note>();
         data = readDataCSV();
-        clearScreen(); 
-        mainPrintout(data);
-        mainLoop(mainInput, data);
+        initPrintout(data);
         boolean flag = true;
 
-        while(flag) {
-            if (args[0].substring(0,1).equals("a")) {    
-                flag = false;
-                System.out.println("adding...");
-                data.add(addNewNote(mainInput, data));
-                writeDataCSV(data);
-            } else if (args[0].substring(0,1).equals("d")) {
-                System.out.println("deleting...");
-            } else if (args[0].substring(0,1).equals("q")) {
-                System.exit(0);
-            } else {
-                System.out.println("invalid, h:help, q:quit");
+        try {  
+            while(flag) {
+                if (args[0].substring(0,1).equals("a")) {    
+                    flag = false;
+                    data.add(addNewNote(mainInput, data));
+                    writeDataCSV(data);
+                } else if (args[0].substring(0,1).equals("d")) {
+                    flag = false;
+                    data = deleteOldNote(mainInput, data, args);
+                } else if (args[0].substring(0,1).equals("q")) {
+                    System.exit(0);
+                } else {
+                    System.exit(0);
+                }
             }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.exit(0);
         }
-
     }
 
-    static void mainPrintout(ArrayList<Note> data) {
-        //System.out.println ("Noted");
-        System.out.println ("flags h: help, v: view, a:add, d:delete");
+    static void initPrintout(ArrayList<Note> data) {
+        int numberOfNotes = data.size();
+
+        System.out.print("You have " + numberOfNotes);
+        
+        if(numberOfNotes == 1) {
+            System.out.println(" item left on the reminder!");
+        } else {
+            System.out.println(" items left on the reminder!");
+        }
+        
         for (Note n : data) {
-            System.out.println (n.getTextData());
+            System.out.print(n.getId() + ") ");
+            System.out.println(n.getTextData());
         }
-    }
-
-    static void mainLoop(Scanner mainInput, ArrayList<Note> data) {
-
     }
 
     static Note addNewNote(Scanner mainInput, ArrayList<Note> data) {
@@ -60,6 +66,15 @@ public class Noted {
         Note newNote = new Note(String.valueOf(newIndex), "0", date, "0", textData);
 
         return newNote;
+    }
+
+    static ArrayList<Note> deleteOldNote(Scanner mainInput, ArrayList<Note> data, String[] args) {
+        System.out.println(args[1]);
+        int key = Integer.parseInt(args[1]);
+        data.remove(key);
+        writeDataCSV(data);
+
+        return data;
     }
 
 
