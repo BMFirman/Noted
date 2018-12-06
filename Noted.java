@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
 import java.util.Scanner;
+
 public class Noted {
 
     public static void main(String[] args) {
@@ -16,7 +17,22 @@ public class Noted {
         clearScreen(); 
         mainPrintout(data);
         mainLoop(mainInput, data);
+        boolean flag = true;
 
+        while(flag) {
+            if (args[0].substring(0,1).equals("a")) {    
+                flag = false;
+                System.out.println("adding...");
+                data.add(addNewNote(mainInput, data));
+                writeDataCSV(data);
+            } else if (args[0].substring(0,1).equals("d")) {
+                System.out.println("deleting...");
+            } else if (args[0].substring(0,1).equals("q")) {
+                System.exit(0);
+            } else {
+                System.out.println("invalid, h:help, q:quit");
+            }
+        }
 
     }
 
@@ -29,34 +45,14 @@ public class Noted {
     }
 
     static void mainLoop(Scanner mainInput, ArrayList<Note> data) {
-        while(true) {
-            String selection = mainInput.next();
-            if (selection.substring(0,1).equals("a")) {    
-                System.out.println("adding...");
-                data.add(addNewNote(mainInput, data));
-            
-            } else if (selection.substring(0,1).equals("d")) {
-                System.out.println("deleting...");
-            
-            } else if (selection.substring(0,1).equals("q")) {
-                System.exit(0);
-            
-            } else if (selection.substring(0,1).equals("x")) {
-                System.out.println("returning...");
-                clearScreen(); 
-            } else {
-                System.out.println("invalid, h:help, q:quit");
-            }
-        }
+
     }
 
     static Note addNewNote(Scanner mainInput, ArrayList<Note> data) {
         int newIndex = data.size();
-        newIndex++;
-
 
         System.out.print("Title: ");
-        String textData = mainInput.next();
+        String textData = mainInput.nextLine();
         System.out.println();
         System.out.print("Expiry (DD/MM/YY): ");
         String date = mainInput.next();
