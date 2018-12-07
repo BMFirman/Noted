@@ -9,6 +9,8 @@ import java.util.FormatterClosedException;
 import java.util.Scanner;
 
 public class Noted {
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_RESET = "\u001B[0m";
 
     public static void main(String[] args) {
         Scanner mainInput = new Scanner(System.in); 
@@ -49,7 +51,7 @@ public class Noted {
         }
         
         for (Note n : data) {
-            System.out.print(n.getId() + ") ");
+            System.out.print(ANSI_BLUE + n.getId() + ") " + ANSI_RESET);
             System.out.println(n.getTextData());
         }
     }
@@ -70,11 +72,22 @@ public class Noted {
 
     static ArrayList<Note> deleteOldNote(Scanner mainInput, ArrayList<Note> data, String[] args) {
         System.out.println(args[1]);
-        int key = Integer.parseInt(args[1]);
-        data.remove(key);
-        writeDataCSV(data);
+        
+        try{
+            int key = Integer.parseInt(args[1]);
+            data.remove(key);
+            writeDataCSV(data);
+        }catch (NumberFormatException ex) {
+            System.out.println("Input is not a valid integer");
+        }
+
+        //int key = Integer.parseInt(args[1]);
 
         return data;
+    }
+
+    static void helpPrintout() {
+        
     }
 
 
