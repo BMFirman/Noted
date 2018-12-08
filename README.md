@@ -1,7 +1,7 @@
 
 <div align="center">
 <h3>Noted</h3>
-<img src="Noted.png" width="200px">
+<img src="Noted.png" width="300px">
 
 </div>
 
@@ -34,4 +34,4 @@ TODO
 
 ## Contributors
 * [BMFirman](https://github.com/BMFirman/)
-Special thanks again to for providing an excelent tool to replicate: [Aesophor](https://github.com/aesophor/)
+Special thanks again to [Aesophor](https://github.com/aesophor/) for providing an excelent tool to replicate :) 
