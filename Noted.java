@@ -89,9 +89,9 @@ public class Noted {
 
     static long getDifferenceDays(Date d1, Date d2) {
         long diff = d1.getTime() - d2.getTime();
-        long days = (diff / (1000*60*60*24));
-        //return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-        return days;
+        //long days = (diff / (1000*60*60*24));
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        //return days;
     }
 
     static Note addNewNote(Scanner mainInput, ArrayList<Note> data) {
@@ -100,7 +100,7 @@ public class Noted {
         System.out.print("Title: ");
         String textData = mainInput.nextLine();
         System.out.println();
-        System.out.print("Expiry (DD/MM/YY): ");
+        System.out.print("Expiry (DD/MM/YYYY): ");
         String date = mainInput.next();
 
         Note newNote = new Note(String.valueOf(newIndex), "0", date, 0, textData);
