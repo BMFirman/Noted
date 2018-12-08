@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
 import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import static java.lang.Math.toIntExact;
+import java.util.concurrent.TimeUnit;
+import java.text.ParseException;
 
 public class Noted {
 
@@ -19,6 +24,11 @@ public class Noted {
         data = readDataCSV();
         initPrintout(data);
         boolean flag = true;
+        calculateDaysLeft();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
+        Date currentDate = new Date();  
+        System.out.println(formatter.format(currentDate));  
 
         try {
             while(flag) {
@@ -60,6 +70,26 @@ public class Noted {
         }
     }
 
+    static void calculateDaysLeft (Date currentDate, ArrayList<Note> data) {
+        for (Note n : data) {
+            try {
+                String dueDateString = n.getDate();
+                Date dueDate = new SimpleDateFormat("dd/MM/yyyy").parse(dueDateString);  
+                long remainingDays = getDifferenceDays(dueDate, currentDate);
+                int remainingDaysInteger = toIntExact(remainingDays);; 
+                System.out.println(remainingDaysInteger);
+                n.setPriority(remainingDaysInteger);
+            } catch (ParseException e){
+                System.out.println("Could not parse");
+            }
+        }
+    }
+
+    static long getDifferenceDays(Date d1, Date d2) {
+        long diff = d2.getTime() - d1.getTime();
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    }
+
     static Note addNewNote(Scanner mainInput, ArrayList<Note> data) {
         int newIndex = data.size();
 
@@ -69,7 +99,7 @@ public class Noted {
         System.out.print("Expiry (DD/MM/YY): ");
         String date = mainInput.next();
 
-        Note newNote = new Note(String.valueOf(newIndex), "0", date, "0", textData);
+        Note newNote = new Note(String.valueOf(newIndex), "0", date, 0, textData);
 
         return newNote;
     }
@@ -109,7 +139,8 @@ public class Noted {
 
         ArrayList<Note> data = new ArrayList<Note>();
 
-        String id, active, date, priority, textData;
+        String id, active, date, textData;
+        int priority;
 
         Scanner input = null;
         input = initScanner(filename, workingDirectory, input);
@@ -126,7 +157,7 @@ public class Noted {
             id = theLine[0];
             active = theLine[1];
             date = theLine[2];
-            priority = theLine[3];
+            priority = Integer.parseInt(theLine[3]);
             textData = theLine[4];
 
             Note d = new Note(id, active, date, priority, textData);
@@ -160,7 +191,7 @@ public class Noted {
             String id = data.get(i).getId();
             String active = data.get(i).getActive();
             String date = data.get(i).getDate();
-            String priority = data.get(i).getPriority();
+            int priority = data.get(i).getPriority();
             String textData = data.get(i).getTextData();
 
             output.format(id + "," + active + "," + date + "," + priority + "," + textData + ",\n");

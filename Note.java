@@ -2,10 +2,10 @@ public class Note {
     private String id;
     private String active;
     private String date;
-    private String priority;
+    private int priority;
     private String textData;
 
-    Note(String id, String active, String date, String priority, String textData) {
+    Note(String id, String active, String date, int priority, String textData) {
         this.id = id;
         this.active = active;
         this.date = date;
@@ -29,8 +29,12 @@ public class Note {
         return date;
     }
 
-    public String getPriority() {
+    public int getPriority() {
         return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     public String getTextData() {
