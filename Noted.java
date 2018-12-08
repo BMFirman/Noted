@@ -9,19 +9,20 @@ import java.util.FormatterClosedException;
 import java.util.Scanner;
 
 public class Noted {
+
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_RESET = "\u001B[0m";
 
     public static void main(String[] args) {
-        Scanner mainInput = new Scanner(System.in); 
+        Scanner mainInput = new Scanner(System.in);
         ArrayList<Note> data = new ArrayList<Note>();
         data = readDataCSV();
         initPrintout(data);
         boolean flag = true;
 
-        try {  
+        try {
             while(flag) {
-                if (args[0].substring(0,1).equals("a")) {    
+                if (args[0].substring(0,1).equals("a")) {
                     flag = false;
                     data.add(addNewNote(mainInput, data));
                     writeDataCSV(data);
@@ -29,6 +30,9 @@ public class Noted {
                     flag = false;
                     data = deleteOldNote(mainInput, data, args);
                 } else if (args[0].substring(0,1).equals("q")) {
+                    System.exit(0);
+                } else if (args[0].substring(0,1).equals("h")) {
+                    helpPrintout();
                     System.exit(0);
                 } else {
                     System.exit(0);
@@ -43,13 +47,13 @@ public class Noted {
         int numberOfNotes = data.size();
 
         System.out.print("You have " + numberOfNotes);
-        
+
         if(numberOfNotes == 1) {
             System.out.println(" item left on the reminder!");
         } else {
             System.out.println(" items left on the reminder!");
         }
-        
+
         for (Note n : data) {
             System.out.print(ANSI_BLUE + n.getId() + ") " + ANSI_RESET);
             System.out.println(n.getTextData());
@@ -72,7 +76,7 @@ public class Noted {
 
     static ArrayList<Note> deleteOldNote(Scanner mainInput, ArrayList<Note> data, String[] args) {
         System.out.println(args[1]);
-        
+
         try{
             int key = Integer.parseInt(args[1]);
             data.remove(key);
@@ -81,19 +85,21 @@ public class Noted {
             System.out.println("Input is not a valid integer");
         }
 
-        //int key = Integer.parseInt(args[1]);
-
         return data;
     }
 
     static void helpPrintout() {
-        
+        System.out.println("Usage: Noted arg <index>");
+        System.out.println("a -add               - Add a new item.");
+        System.out.println("r -remove <index>    - Remove an item by index.");
+        System.out.println("l -list              - List all items");
+        System.out.println("h -help              - Display help message");
     }
 
 
-    public static void clearScreen() {  
-        System.out.print("\033[H\033[2J");  
-        System.out.flush();  
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     public static ArrayList<Note> readDataCSV() {
@@ -145,7 +151,7 @@ public class Noted {
 
         String filename = "data.csv";
         String workingDirectory = System.getProperty("user.dir");
-        
+
         Formatter output = null;
         output = initFormatter(filename, workingDirectory, output);
 
@@ -177,5 +183,5 @@ public class Noted {
         }
 
         return output;
-    }        
+    }
 }
