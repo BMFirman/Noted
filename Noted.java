@@ -24,11 +24,12 @@ public class Noted {
         data = readDataCSV();
         initPrintout(data);
         boolean flag = true;
-        calculateDaysLeft();
+        
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
         Date currentDate = new Date();  
-        System.out.println(formatter.format(currentDate));  
+        System.out.println(formatter.format(currentDate));
+        calculateDaysLeft(currentDate, data);
 
         try {
             while(flag) {
@@ -74,9 +75,10 @@ public class Noted {
         for (Note n : data) {
             try {
                 String dueDateString = n.getDate();
+                System.out.println(dueDateString);
                 Date dueDate = new SimpleDateFormat("dd/MM/yyyy").parse(dueDateString);  
                 long remainingDays = getDifferenceDays(dueDate, currentDate);
-                int remainingDaysInteger = toIntExact(remainingDays);; 
+                int remainingDaysInteger = toIntExact(remainingDays); 
                 System.out.println(remainingDaysInteger);
                 n.setPriority(remainingDaysInteger);
             } catch (ParseException e){
@@ -86,8 +88,10 @@ public class Noted {
     }
 
     static long getDifferenceDays(Date d1, Date d2) {
-        long diff = d2.getTime() - d1.getTime();
-        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        long diff = d1.getTime() - d2.getTime();
+        long days = (diff / (1000*60*60*24));
+        //return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        return days;
     }
 
     static Note addNewNote(Scanner mainInput, ArrayList<Note> data) {
