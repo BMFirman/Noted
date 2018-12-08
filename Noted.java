@@ -17,6 +17,9 @@ public class Noted {
 
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
 
     public static void main(String[] args) {
         Scanner mainInput = new Scanner(System.in);
@@ -68,7 +71,22 @@ public class Noted {
 
         for (Note n : data) {
             System.out.print(ANSI_BLUE + n.getId() + ") " + ANSI_RESET);
-            System.out.println(n.getTextData());
+            System.out.print(n.getTextData());
+            initPrintoutTimeWarning(n.getPriority());
+        }
+    }
+
+    static void initPrintoutTimeWarning(int days) {
+        if (days > 7) {
+            System.out.println(ANSI_GREEN + " (" + days + " days left)" + ANSI_RESET);
+        } else if (days < 7 && days > 3) {
+            System.out.println(ANSI_YELLOW + " (" + days + "days left)" + ANSI_RESET);
+        } else if (days <= 3 && days > 1) {
+            System.out.println(ANSI_RED + " (" + days + "days left)" + ANSI_RESET);
+        } else if (days == 1) {
+            System.out.println(ANSI_RED + " (" + days + "day left)" + ANSI_RESET);
+        } else {
+            System.out.println(ANSI_RED + " (DUE!)" + ANSI_RESET);
         }
     }
 
