@@ -28,7 +28,7 @@ public class Noted {
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
         Date currentDate = new Date();  
-        System.out.println(formatter.format(currentDate));
+        //System.out.println(formatter.format(currentDate));
         calculateDaysLeft(currentDate, data);
 
         try {
@@ -36,7 +36,8 @@ public class Noted {
                 if (args[0].substring(0,1).equals("a")) {
                     flag = false;
                     data.add(addNewNote(mainInput, data));
-                    writeDataCSV(data);
+                    calculateDaysLeft(currentDate, data);
+                    //writeDataCSV(data);
                 } else if (args[0].substring(0,1).equals("d")) {
                     flag = false;
                     data = deleteOldNote(mainInput, data, args);
@@ -75,16 +76,18 @@ public class Noted {
         for (Note n : data) {
             try {
                 String dueDateString = n.getDate();
-                System.out.println(dueDateString);
+                //System.out.println(dueDateString);
                 Date dueDate = new SimpleDateFormat("dd/MM/yyyy").parse(dueDateString);  
                 long remainingDays = getDifferenceDays(dueDate, currentDate);
                 int remainingDaysInteger = toIntExact(remainingDays); 
-                System.out.println(remainingDaysInteger);
+                //System.out.println(remainingDaysInteger);
                 n.setPriority(remainingDaysInteger);
             } catch (ParseException e){
                 System.out.println("Could not parse");
             }
+            writeDataCSV(data);
         }
+
     }
 
     static long getDifferenceDays(Date d1, Date d2) {
