@@ -1,7 +1,7 @@
 
 <div align="center">
 <h3>Noted</h3>
-<img src="Noted.png">
+<img src="Noted.png" width="200px">
 
 </div>
 
@@ -23,10 +23,10 @@ Data is simply stored in the data.csv file, which is then converted into an Arra
 
 ## Usage
 ```
-$        a -add               #Add a new item.");
-$        r -remove <index>    #Remove an item by index.");
-$        l -list              #List all items");
-$        h -help              #Display help message");
+$a -add               #Add a new item.");
+$r -remove <index>    #Remove an item by index.");
+$l -list              #List all items");
+$h -help              #Display help message");
 ```
 
 ## Configuration
@@ -34,5 +34,4 @@ TODO
 
 ## Contributors
 * [BMFirman](https://github.com/BMFirman/)
-Special thanks again to for providing an excelent tool to replicate:
-* [Aesophor](https://github.com/aesophor/)
+Special thanks again to for providing an excelent tool to replicate: [Aesophor](https://github.com/aesophor/)
