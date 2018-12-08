@@ -157,6 +157,9 @@ public class Noted {
         System.out.flush();
     }
 
+
+    // There's no need to change anything from this point,
+    // Unless you wished to add or change functionality to the note objects.
     public static ArrayList<Note> readDataCSV() {
 
         String filename = "data.csv";
