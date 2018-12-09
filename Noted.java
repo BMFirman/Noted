@@ -77,14 +77,15 @@ public class Noted {
     }
 
     static void initPrintoutTimeWarning(int days) {
-        if (days > 7) {
-            System.out.println(ANSI_GREEN + " (" + days + " days left)" + ANSI_RESET);
-        } else if (days < 7 && days > 3) {
-            System.out.println(ANSI_YELLOW + " (" + days + "days left)" + ANSI_RESET);
-        } else if (days <= 3 && days > 1) {
-            System.out.println(ANSI_RED + " (" + days + "days left)" + ANSI_RESET);
-        } else if (days == 1) {
-            System.out.println(ANSI_RED + " (" + days + "day left)" + ANSI_RESET);
+        int days2 = days / 24;
+        if (days > 168) {
+            System.out.println(ANSI_GREEN + " (" + days2 + " days left)" + ANSI_RESET);
+        } else if (days < 168 && days > 72) {
+            System.out.println(ANSI_YELLOW + " (" + days2 + "days left)" + ANSI_RESET);
+        } else if (days <= 72 && days > 47) {
+            System.out.println(ANSI_RED + " (" + days2 + "days left)" + ANSI_RESET);
+        } else if (days <= 47 && days >= 24) {
+            System.out.println(ANSI_RED + " (" + days2 + "day left)" + ANSI_RESET);
         } else {
             System.out.println(ANSI_RED + " (DUE!)" + ANSI_RESET);
         }
@@ -110,9 +111,9 @@ public class Noted {
 
     static long getDifferenceDays(Date d1, Date d2) {
         long diff = d1.getTime() - d2.getTime();
-        //long days = (diff / (1000*60*60*24));
-        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-        //return days;
+        long days = (diff / (1000*60*60));
+        //return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        return days;
     }
 
     static Note addNewNote(Scanner mainInput, ArrayList<Note> data) {

@@ -23,10 +23,17 @@ Data is simply stored in the data.csv file, which is then converted into an Arra
 
 ## Usage
 ```
+<<<<<<< HEAD
 $a -add               #Add a new item.");
 $r -remove <index>    #Remove an item by index.");
 $l -list              #List all items");
 $h -help              #Display help message");
+=======
+$a -add               #Add a new item
+$r -remove <index>    #Remove an item by index
+$l -list              #List all items
+$h -help              #Display help message
+>>>>>>> dev
 ```
 
 ## Configuration
@@ -34,4 +41,8 @@ TODO
 
 ## Contributors
 * [BMFirman](https://github.com/BMFirman/)
+<<<<<<< HEAD
 Special thanks again to [Aesophor](https://github.com/aesophor/) for providing an excelent tool to replicate :) 
+=======
+Special thanks again to [Aesophor](https://github.com/aesophor/) for providing an excelent tool to replicate :) 
+>>>>>>> dev
