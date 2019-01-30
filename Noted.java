@@ -81,11 +81,11 @@ public class Noted {
         if (days > 168) {
             System.out.println(ANSI_GREEN + " (" + days2 + " days left)" + ANSI_RESET);
         } else if (days < 168 && days > 72) {
-            System.out.println(ANSI_YELLOW + " (" + days2 + "days left)" + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + " (" + days2 + " days left)" + ANSI_RESET);
         } else if (days <= 72 && days > 47) {
-            System.out.println(ANSI_RED + " (" + days2 + "days left)" + ANSI_RESET);
+            System.out.println(ANSI_RED + " (" + days2 + " days left)" + ANSI_RESET);
         } else if (days <= 47 && days >= 24) {
-            System.out.println(ANSI_RED + " (" + days2 + "day left)" + ANSI_RESET);
+            System.out.println(ANSI_RED + " (" + days2 + " day left)" + ANSI_RESET);
         } else {
             System.out.println(ANSI_RED + " (DUE!)" + ANSI_RESET);
         }
