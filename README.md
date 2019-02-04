@@ -30,7 +30,7 @@ $l -list              #List all items");
 $h -help              #Display help message");
 =======
 $a -add               #Add a new item
-$r -remove <index>    #Remove an item by index
+$d -delete <index>    #Remove an item by index
 $l -list              #List all items
 $h -help              #Display help message
 >>>>>>> dev
