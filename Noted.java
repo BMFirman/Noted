@@ -36,6 +36,7 @@ public class Noted {
 
         try {
             while(flag) {
+                writeDataCSV(data); // Ensure due date flag is accurate
                 if (args[0].substring(0,1).equals("a")) {
                     flag = false;
                     data.add(addNewNote(mainInput, data));
