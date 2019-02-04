@@ -81,11 +81,11 @@ public class Noted {
         if (days > 168) {
             System.out.println(ANSI_GREEN + " (" + days2 + " days left)" + ANSI_RESET);
         } else if (days < 168 && days > 72) {
-            System.out.println(ANSI_YELLOW + " (" + days2 + "days left)" + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + " (" + days2 + " days left)" + ANSI_RESET);
         } else if (days <= 72 && days > 47) {
-            System.out.println(ANSI_RED + " (" + days2 + "days left)" + ANSI_RESET);
+            System.out.println(ANSI_RED + " (" + days2 + " days left)" + ANSI_RESET);
         } else if (days <= 47 && days >= 24) {
-            System.out.println(ANSI_RED + " (" + days2 + "day left)" + ANSI_RESET);
+            System.out.println(ANSI_RED + " (" + days2 + " day left)" + ANSI_RESET);
         } else {
             System.out.println(ANSI_RED + " (DUE!)" + ANSI_RESET);
         }
@@ -147,7 +147,7 @@ public class Noted {
     static void helpPrintout() {
         System.out.println("Usage: Noted arg <index>");
         System.out.println("a -add               - Add a new item.");
-        System.out.println("r -remove <index>    - Remove an item by index.");
+        System.out.println("d -delete <index>    - Remove an item by index.");
         System.out.println("l -list              - List all items");
         System.out.println("h -help              - Display help message");
     }
@@ -217,7 +217,8 @@ public class Noted {
 
         output.format("id, active, date, priority, textData,\n");
         for (int i = 0; i < data.size(); i++) {
-            String id = data.get(i).getId();
+            // String id = data.get(i).getId();
+            String id = String.valueOf(i);
             String active = data.get(i).getActive();
             String date = data.get(i).getDate();
             int priority = data.get(i).getPriority();
