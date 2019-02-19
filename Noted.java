@@ -1,83 +1,87 @@
-import java.util.ArrayList;
-import java.nio.file.Paths;
-import java.util.Scanner;
 import java.io.FileNotFoundException;
-import java.lang.SecurityException;
 import java.io.IOException;
-import java.util.Formatter;
-import java.util.FormatterClosedException;
-import java.util.Scanner;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import static java.lang.Math.toIntExact;
-import java.util.concurrent.TimeUnit;
+import java.nio.file.Paths;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Formatter;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+
+import static java.lang.Math.toIntExact;
 
 public class Noted {
 
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_BLUE = "\u001B[34m";
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
 
     public static void main(String[] args) {
         Scanner mainInput = new Scanner(System.in);
-        ArrayList<Note> data = new ArrayList<Note>();
-        data = readDataCSV();
+        ArrayList < Note > data = new ArrayList < > ();
+        try {
+            data = readDataCSV();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         initPrintout(data);
         boolean flag = true;
-        
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
-        Date currentDate = new Date();  
-        //System.out.println(formatter.format(currentDate));
+        Date currentDate = new Date();
         calculateDaysLeft(currentDate, data);
 
         try {
-            while(flag) {
+            while (flag) {
                 writeDataCSV(data); // Ensure due date flag is accurate
-                if (args[0].substring(0,1).equals("a")) {
-                    flag = false;
-                    data.add(addNewNote(mainInput, data));
-                    calculateDaysLeft(currentDate, data);
-                    //writeDataCSV(data);
-                } else if (args[0].substring(0,1).equals("d")) {
-                    flag = false;
-                    data = deleteOldNote(mainInput, data, args);
-                } else if (args[0].substring(0,1).equals("q")) {
-                    System.exit(0);
-                } else if (args[0].substring(0,1).equals("h")) {
-                    helpPrintout();
-                    System.exit(0);
-                } else {
-                    System.exit(0);
+                switch (args[0].substring(0, 1)) {
+                    case "a":
+                        flag = false;
+                        data.add(addNewNote(mainInput, data));
+                        calculateDaysLeft(currentDate, data);
+                        //writeDataCSV(data);
+                        break;
+                    case "d":
+                        flag = false;
+                        data = deleteOldNote(data, args);
+                        break;
+                    case "q":
+                        System.exit(0);
+                    case "h":
+                        helpPrintout();
+                        System.exit(0);
+                    default:
+                        System.exit(0);
                 }
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             System.exit(0);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
-    static void initPrintout(ArrayList<Note> data) {
+    private static void initPrintout(ArrayList < Note > data) {
         int numberOfNotes = data.size();
 
         System.out.print("You have " + numberOfNotes);
 
-        if(numberOfNotes == 1) {
+        if (numberOfNotes == 1) {
             System.out.println(" item left on the reminder!");
         } else {
             System.out.println(" items left on the reminder!");
         }
 
-        for (Note n : data) {
+        for (Note n: data) {
             System.out.print(ANSI_BLUE + n.getId() + ") " + ANSI_RESET);
             System.out.print(n.getTextData());
             initPrintoutTimeWarning(n.getPriority());
         }
     }
 
-    static void initPrintoutTimeWarning(int days) {
+    private static void initPrintoutTimeWarning(int days) {
         int days2 = days / 24;
         if (days > 168) {
             System.out.println(ANSI_GREEN + " (" + days2 + " days left)" + ANSI_RESET);
@@ -92,32 +96,30 @@ public class Noted {
         }
     }
 
-    static void calculateDaysLeft (Date currentDate, ArrayList<Note> data) {
-        for (Note n : data) {
+    private static void calculateDaysLeft(Date currentDate, ArrayList < Note > data) {
+        for (Note n: data) {
             try {
                 String dueDateString = n.getDate();
-                //System.out.println(dueDateString);
-                Date dueDate = new SimpleDateFormat("dd/MM/yyyy").parse(dueDateString);  
+                Date dueDate = new SimpleDateFormat("dd/MM/yyyy").parse(dueDateString);
                 long remainingDays = getDifferenceDays(dueDate, currentDate);
-                int remainingDaysInteger = toIntExact(remainingDays); 
-                //System.out.println(remainingDaysInteger);
+                int remainingDaysInteger = toIntExact(remainingDays);
                 n.setPriority(remainingDaysInteger);
-            } catch (ParseException e){
+                writeDataCSV(data);
+            } catch (ParseException e) {
                 System.out.println("Could not parse");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-            writeDataCSV(data);
         }
 
     }
 
-    static long getDifferenceDays(Date d1, Date d2) {
+    private static long getDifferenceDays(Date d1, Date d2) {
         long diff = d1.getTime() - d2.getTime();
-        long days = (diff / (1000*60*60));
-        //return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-        return days;
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
-    static Note addNewNote(Scanner mainInput, ArrayList<Note> data) {
+    private static Note addNewNote(Scanner mainInput, ArrayList < Note > data) {
         int newIndex = data.size();
 
         System.out.print("Title: ");
@@ -126,26 +128,26 @@ public class Noted {
         System.out.print("Expiry (DD/MM/YYYY): ");
         String date = mainInput.next();
 
-        Note newNote = new Note(String.valueOf(newIndex), "0", date, 0, textData);
-
-        return newNote;
+        return new Note(String.valueOf(newIndex), "0", date, 0, textData);
     }
 
-    static ArrayList<Note> deleteOldNote(Scanner mainInput, ArrayList<Note> data, String[] args) {
+    private static ArrayList < Note > deleteOldNote(ArrayList < Note > data, String[] args) {
         System.out.println(args[1]);
 
-        try{
+        try {
             int key = Integer.parseInt(args[1]);
             data.remove(key);
             writeDataCSV(data);
-        }catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             System.out.println("Input is not a valid integer");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
 
         return data;
     }
 
-    static void helpPrintout() {
+    private static void helpPrintout() {
         System.out.println("Usage: Noted arg <index>");
         System.out.println("a -add               - Add a new item.");
         System.out.println("d -delete <index>    - Remove an item by index.");
@@ -153,27 +155,18 @@ public class Noted {
         System.out.println("h -help              - Display help message");
     }
 
-
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-
     // There's no need to change anything from this point,
     // Unless you wished to add or change functionality to the note objects.
-    public static ArrayList<Note> readDataCSV() {
+    private static ArrayList < Note > readDataCSV() throws IOException {
 
         String filename = "data.csv";
         String workingDirectory = System.getProperty("user.dir");
 
-        ArrayList<Note> data = new ArrayList<Note>();
+        ArrayList < Note > data = new ArrayList < > ();
 
         String id, active, date, textData;
         int priority;
-
-        Scanner input = null;
-        input = initScanner(filename, workingDirectory, input);
+        Scanner input = initScanner(filename, workingDirectory);
 
         int count = 0;
         while (input.hasNext()) {
@@ -183,7 +176,6 @@ public class Noted {
             if (count == 1) {
                 continue;
             }
-
             id = theLine[0];
             active = theLine[1];
             date = theLine[2];
@@ -195,30 +187,24 @@ public class Noted {
         }
         input.close();
         return data;
+
+
+
     }
 
-    public static Scanner initScanner(String filename, String workingDirectory, Scanner input) {
-
-        try {
-            input = new Scanner(Paths.get(workingDirectory + "/" + filename));
-        } catch (IOException ioExc) {
-            System.out.println("Scanner was not initialized");
-        }
-
-        return input;
+    private static Scanner initScanner(String filename, String workingDirectory) throws IOException {
+        return new Scanner(Paths.get(workingDirectory + "/" + filename));
     }
 
-    static void writeDataCSV(ArrayList<Note> data) {
+    private static void writeDataCSV(ArrayList < Note > data) throws FileNotFoundException {
 
         String filename = "data.csv";
         String workingDirectory = System.getProperty("user.dir");
 
-        Formatter output = null;
-        output = initFormatter(filename, workingDirectory, output);
+        Formatter output = initFormatter(filename, workingDirectory);
 
         output.format("id, active, date, priority, textData,\n");
         for (int i = 0; i < data.size(); i++) {
-            // String id = data.get(i).getId();
             String id = String.valueOf(i);
             String active = data.get(i).getActive();
             String date = data.get(i).getDate();
@@ -232,18 +218,9 @@ public class Noted {
     }
 
 
-    public static Formatter initFormatter(String filename, String workingDirectory, Formatter output) {
+    private static Formatter initFormatter(String filename, String workingDirectory) throws FileNotFoundException {
 
-        try {
-            output = new Formatter(Paths.get(workingDirectory) + "/" + filename);
-        } catch (SecurityException secExc) {
-            System.err.println("Can't write to csv!");
-            System.exit(1);
-        } catch (FileNotFoundException fnfExc) {
-            System.err.println("Can't find path to csv!");
-            System.exit(1);
-        }
+        return new Formatter(Paths.get(workingDirectory) + "/" + filename);
 
-        return output;
     }
 }
