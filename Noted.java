@@ -21,30 +21,29 @@ public class Noted {
 
     public static void main(String[] args) {
         Scanner mainInput = new Scanner(System.in);
-        ArrayList < Note > data = new ArrayList < > ();
+        ArrayList <Note> data = new ArrayList <>();
+
         try {
             data = readDataCSV();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         initPrintout(data);
-        boolean flag = true;
+
 
         Date currentDate = new Date();
         calculateDaysLeft(currentDate, data);
 
+        //boolean flag = true;
         try {
-            while (flag) {
                 writeDataCSV(data); // Ensure due date flag is accurate
                 switch (args[0].substring(0, 1)) {
                     case "a":
-                        flag = false;
                         data.add(addNewNote(mainInput, data));
                         calculateDaysLeft(currentDate, data);
-                        //writeDataCSV(data);
                         break;
                     case "d":
-                        flag = false;
                         data = deleteOldNote(data, args);
                         break;
                     case "q":
@@ -55,7 +54,6 @@ public class Noted {
                     default:
                         System.exit(0);
                 }
-            }
         } catch (ArrayIndexOutOfBoundsException e) {
             System.exit(0);
         } catch (FileNotFoundException e) {
@@ -81,16 +79,16 @@ public class Noted {
         }
     }
 
-    private static void initPrintoutTimeWarning(int days) {
-        int days2 = days / 24;
-        if (days > 168) {
-            System.out.println(ANSI_GREEN + " (" + days2 + " days left)" + ANSI_RESET);
-        } else if (days < 168 && days > 72) {
-            System.out.println(ANSI_YELLOW + " (" + days2 + " days left)" + ANSI_RESET);
-        } else if (days <= 72 && days > 47) {
-            System.out.println(ANSI_RED + " (" + days2 + " days left)" + ANSI_RESET);
-        } else if (days <= 47 && days >= 24) {
-            System.out.println(ANSI_RED + " (" + days2 + " day left)" + ANSI_RESET);
+    private static void initPrintoutTimeWarning(int hours) {
+        int days = hours / 24;
+        if (hours > 168) {
+            System.out.println(ANSI_GREEN + " (" + days + " days left)" + ANSI_RESET);
+        } else if (hours < 168 && hours > 72) {
+            System.out.println(ANSI_YELLOW + " (" + days + " days left)" + ANSI_RESET);
+        } else if (hours <= 72 && hours > 47) {
+            System.out.println(ANSI_RED + " (" + days + " days left)" + ANSI_RESET);
+        } else if (hours <= 47 && hours >= 24) {
+            System.out.println(ANSI_RED + " (" + days + " day left)" + ANSI_RESET);
         } else {
             System.out.println(ANSI_RED + " (DUE!)" + ANSI_RESET);
         }
@@ -119,7 +117,7 @@ public class Noted {
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
-    private static Note addNewNote(Scanner mainInput, ArrayList < Note > data) {
+    private static Note addNewNote(Scanner mainInput, ArrayList <Note> data) {
         int newIndex = data.size();
 
         System.out.print("Title: ");
