@@ -13,31 +13,27 @@ public class Note {
         this.textData = textData;
     }
 
-    public void printNote() {
-        System.out.println(this.id + " " + this.active + " " + this.date + " " + this.priority + " " + this.textData);
-    }
-
-    public String getId() {
+    String getId() {
         return id;
     }
 
-    public String getActive() {
+    String getActive() {
         return active;
     }
 
-    public String getDate() {
+    String getDate() {
         return date;
     }
 
-    public int getPriority() {
+    int getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    void setPriority(int priority) {
         this.priority = priority;
     }
 
-    public String getTextData() {
+    String getTextData() {
         return textData;
     }
 }
